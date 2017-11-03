@@ -1,0 +1,43 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static "style/base.css" %}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <title>{% block title %}MyRestaurants{% endblock %}</title>
+</head>
+<body>
+<div id="header">
+    <div class="logo">
+      My Restaurant
+    </div>
+    {% block header %}
+        {% if user.username %}
+            <p>User: {{ user.username }} | <a href="{% url 'logout' %}?next={{request.path}}">logout</a></p>
+        {% else %}
+            <p>Have an account? <a href="{% url 'login' %}?next={{request.path}}"><i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;login</a></p>{% endif %}
+    {% endblock %}
+</div>
+<div id="datacontent">
+<div id="sidebar">
+    {% block sidebar %}
+    <ul class="menu">
+    <a href="/myrestaurants/dashboard">
+      <li><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</li>
+    </a>
+      <a href="/myrestaurants">
+        <li><i class="fa fa-home" aria-hidden="true"></i> Home</li>
+      </a>
+  </ul>{% endblock %}
+</div>
+<div id="content">
+    {% block content %}
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% endblock %}
+</div>
+</div>
+<div id="footer">Created by Razinal Rahmat</div>
+</body>
+</html>

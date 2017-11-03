@@ -1,0 +1,15 @@
+{% extends "myrestaurants/base.html" %}
+{% block content %}
+  <h1>
+    <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Add data
+  </h1>
+  <hr>
+    <form method="post" enctype="multipart/form-data" action="">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <a class="back" href="{{request.META.HTTP_REFERER}}"><i class="fa fa-undo" aria-hidden="true"></i> Go back</a>
+        <button type="submit" class="save"><i class="fa fa-upload" aria-hidden="true"></i> Submit</button>
+    </form>
+{% endblock %}

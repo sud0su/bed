@@ -1,0 +1,72 @@
+{% extends "myrestaurants/base.html" %}
+{% block content %}
+<h1>
+    <i class="fa fa-cutlery" aria-hidden="true"></i> {{ restaurant.name }}
+    {% if user == restaurant.user %}
+      <div class="pullright">
+        <a href="{% url 'myrestaurants:restaurant_edit' restaurant.id %}">
+          <i class="fa fa-edit" aria-hidden="true"></i> edit</a>
+      </div>
+    {% endif %}
+</h1>
+<hr>
+<div class="_d">
+<h2><i class="fa fa-map-marker" aria-hidden="true"></i> Address:</h2>
+<p>
+    {{ restaurant.street }}, {{ restaurant.number }} <br/>
+    {{ restaurant.zipcode }} {{ restaurant.city }} <br/>
+    {{ restaurant.stateOrProvince }} ({{ restaurant.country }})
+</p>
+
+<h2>
+    Dishes
+    {% if user %}
+    <div class="pullright _bd">
+      <a href="{% url 'myrestaurants:dish_create' restaurant.id %}">
+          <i class="fa fa-plus" aria-hidden="true"></i> add</a>
+    </div>
+    {% endif %}
+</h2>
+<ul class="_d_l">
+    {% for dish in restaurant.dishes.all %}
+        <li>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          <a href="{% url 'myrestaurants:dish_detail' restaurant.id dish.id %}">
+            {{ dish.name }}
+          </a>
+        </li>
+    {% empty %}<li>Sorry, no dishes for this restaurant yet.</li>
+    {% endfor %}
+</ul>
+<div class="boxijo">
+<h2>Reviews</h2>
+</div>
+<ul class="review">
+    {% for review in restaurant.restaurantreview_set.all %}
+        <li>
+            <p>{{ review.rating }} star{{ review.rating|pluralize }}</p>
+            <p>{{ review.comment }}</p>
+            <p class="waktu">Created by {{ review.user }} on {{ review.date }}</p>
+        </li>
+    {% endfor %}
+</ul>
+<div class="br__">
+<h2>Add Review</h2>
+</div>
+<form action="{% url 'myrestaurants:review_create' restaurant.id %}" method="post" class="_f_i">
+    {% csrf_token %}
+    <textarea name="comment" id="comment" placeholder="Message" class="_r_m"></textarea>
+    <p><span  class="_r_r">Rating :</span>
+      <span class="star-rating star">
+        {% for rate in RATING_CHOICES %}
+        <input type="radio" name="rating" id="rating{{ forloop.counter }}" value="{{ rate.0 }}" /><i></i>
+        {% endfor %}
+      </span>
+    </p>
+    <button type="submit" class="_rsave"><i class="fa fa-upload" aria-hidden="true"></i> Review</button>
+</form>
+</div>
+{% endblock %}
+{% block footer %}
+    Created by {{ restaurant.user }} on {{ restaurant.date }}
+{% endblock %}

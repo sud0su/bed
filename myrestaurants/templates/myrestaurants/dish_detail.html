@@ -1,0 +1,30 @@
+{% extends "myrestaurants/base.html" %}
+
+{% block content %}
+
+<h1>
+    <i class="fa fa-cutlery" aria-hidden="true"></i> {{ dish.name }}
+    {% if user == dish.user %}
+        <div class="pullright">
+          <a href="{% url 'myrestaurants:dish_edit' dish.restaurant.id dish.id %}">
+            <i class="fa fa-edit" aria-hidden="true"></i> edit</a>
+        </div>
+    {% endif %}
+</h1>
+<hr>
+<div class="_d">
+<p>{{ dish.description }}</p>
+{% if dish.image %}
+    <div class="_i_d"><img src="{{ dish.image.url }}"/></div>
+{% endif %}
+<p class="_s">Served by <a href="{% url 'myrestaurants:restaurant_detail' dish.restaurant.id %}">{{ dish.restaurant.name }}</a></p>
+</div>
+<hr>
+
+<a class="back" href="{{request.META.HTTP_REFERER}}"><i class="fa fa-undo" aria-hidden="true"></i> Go back</a>
+<div style="margin-bottom:10px"></div>
+{% endblock %}
+
+{% block footer %}
+    Created by {{ dish.user }} on {{ dish.date }}
+{% endblock %}
